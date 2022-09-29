@@ -3,6 +3,7 @@ import {
   GET_YOUTUBE_TRENDING_VIDEOS_PROGRESS,
   SEARCH_YOUTUBE_VIDEOS_PROGRESS,
   MOCK_LOGIN_PROGRESS,
+  PAGINATE_YOUTUBE_VIDEOS_PROGRESS,
 } from './Main.actionTypes';
 
 export const updateMainCustomState = (key, value) => ({
@@ -26,4 +27,10 @@ export const mockLogin = (email, password) => ({
   type: MOCK_LOGIN_PROGRESS,
   email,
   password,
+});
+
+export const paginateYoutubeTrendingVideos = (countryCode, nextPageToken) => ({
+  type: PAGINATE_YOUTUBE_VIDEOS_PROGRESS,
+  countryCode,
+  nextPageToken,
 });

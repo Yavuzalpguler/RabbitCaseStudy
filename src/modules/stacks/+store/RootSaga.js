@@ -3,6 +3,7 @@ import {all} from 'redux-saga/effects';
 import {
   watchGetYoutubeTrendingVideos,
   watchMockLogin,
+  watchPaginateYoutubeTrendingVideos,
   watchSearchYoutubeTrendingVideos,
 } from './Main/Main.saga';
 export default function* RootSaga() {
@@ -10,6 +11,7 @@ export default function* RootSaga() {
     /* App Saga */
 
     watchGetYoutubeTrendingVideos(),
+    watchPaginateYoutubeTrendingVideos(),
     watchSearchYoutubeTrendingVideos(),
     watchMockLogin(),
   ]);

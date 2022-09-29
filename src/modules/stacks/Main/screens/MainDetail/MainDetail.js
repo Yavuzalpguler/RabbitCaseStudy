@@ -12,6 +12,7 @@ import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {
   getYoutubeTrendingVideos,
+  paginateYoutubeTrendingVideos,
   searchYoutubeTrendingVideos,
   updateMainCustomState,
 } from '../../../+store/Main/Main.actions';
@@ -68,6 +69,13 @@ const MainDetail = props => {
     )}`;
   };
 
+  const triggerPagination = () => {
+    const {nextPageToken} = data;
+    if (nextPageToken) {
+      dispatch(paginateYoutubeTrendingVideos(alpha2, nextPageToken));
+    }
+  };
+
   const renderVideoItem = ({item, index}) => {
     return (
       <TouchableOpacity
@@ -115,8 +123,11 @@ const MainDetail = props => {
         data={data?.items}
         renderItem={renderVideoItem}
         keyExtractor={item => item?.id?.videoId}
+        key={item => item?.id?.videoId}
         style={{marginTop: widthPercentage(5)}}
         contentContainerStyle={{paddingBottom: widthPercentage(15)}}
+        onEndReached={triggerPagination}
+        onEndReachedThreshold={0.8}
       />
     </SafeAreaView>
   );

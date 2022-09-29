@@ -4,13 +4,37 @@ function getYoutubeTrendingVideos(countryCode) {
   return fetch(
     'https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=' +
       countryCode +
-      '&maxResults=30' +
+      '&maxResults=10' +
       '&key=' +
       'AIzaSyBQ9WILtTqScelHg7I0V-V9skWV1AOTTSE',
     {
       method: 'GET',
       headers: {
-        // Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    },
+  )
+    .then(response => {
+      return response.json();
+    })
+    .then(responseJson => {
+      return responseJson;
+    });
+}
+
+function paginateYoutubeTrendingVideos(countryCode, nextPageToken) {
+  return fetch(
+    'https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=' +
+      countryCode +
+      '&maxResults=10' +
+      '&pageToken=' +
+      nextPageToken +
+      '&key=' +
+      'AIzaSyBQ9WILtTqScelHg7I0V-V9skWV1AOTTSE',
+    {
+      method: 'GET',
+      headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
@@ -76,4 +100,5 @@ export const mainServices = {
   getYoutubeTrendingVideos,
   searchYoutubeTrendingVideos,
   mockLogin,
+  paginateYoutubeTrendingVideos,
 };

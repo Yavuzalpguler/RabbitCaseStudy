@@ -9,6 +9,9 @@ import {
   MOCK_LOGIN_FAILURE,
   MOCK_LOGIN_PROGRESS,
   MOCK_LOGIN_SUCCESS,
+  PAGINATE_YOUTUBE_VIDEOS_FAILURE,
+  PAGINATE_YOUTUBE_VIDEOS_PROGRESS,
+  PAGINATE_YOUTUBE_VIDEOS_SUCCESS,
 } from './Main.actionTypes';
 
 const initialState = {
@@ -56,6 +59,43 @@ const mainReducer = (state = initialState, action) => {
           ...state.youtubeTrendingVideos,
 
           loading: false,
+        },
+      };
+
+    case PAGINATE_YOUTUBE_VIDEOS_FAILURE:
+      return {
+        ...state,
+        youtubeTrendingVideos: {
+          ...state.youtubeTrendingVideos,
+          loading: false,
+        },
+      };
+
+    case PAGINATE_YOUTUBE_VIDEOS_PROGRESS:
+      return {
+        ...state,
+        youtubeTrendingVideos: {
+          ...state.youtubeTrendingVideos,
+          loading: true,
+        },
+      };
+
+    case PAGINATE_YOUTUBE_VIDEOS_SUCCESS:
+      const videos = [
+        ...(state.youtubeTrendingVideos?.items || []),
+        ...(action?.result?.items || []),
+      ];
+
+      // remove duplicates
+
+      return {
+        ...state,
+        youtubeTrendingVideos: {
+          ...state.youtubeTrendingVideos,
+          loading: false,
+          success: true,
+          nextPageToken: action?.result?.nextPageToken,
+          items: videos,
         },
       };
 

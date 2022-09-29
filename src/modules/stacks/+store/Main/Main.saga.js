@@ -5,6 +5,9 @@ import {
   MOCK_LOGIN_FAILURE,
   MOCK_LOGIN_PROGRESS,
   MOCK_LOGIN_SUCCESS,
+  PAGINATE_YOUTUBE_VIDEOS_FAILURE,
+  PAGINATE_YOUTUBE_VIDEOS_PROGRESS,
+  PAGINATE_YOUTUBE_VIDEOS_SUCCESS,
   SEARCH_YOUTUBE_VIDEOS_FAILURE,
   SEARCH_YOUTUBE_VIDEOS_PROGRESS,
   SEARCH_YOUTUBE_VIDEOS_SUCCESS,
@@ -70,6 +73,26 @@ export function* mockLoginSaga(action) {
   }
 }
 
+export function* paginateYoutubeTrendingVideosSaga(action) {
+  try {
+    const result = yield call(
+      mainServices.paginateYoutubeTrendingVideos,
+      action.countryCode,
+      action.nextPageToken,
+    );
+
+    yield put({
+      type: PAGINATE_YOUTUBE_VIDEOS_SUCCESS,
+      result,
+    });
+  } catch (error) {
+    yield put({
+      type: PAGINATE_YOUTUBE_VIDEOS_FAILURE,
+      error,
+    });
+  }
+}
+
 export function* watchGetYoutubeTrendingVideos() {
   yield takeLatest(
     GET_YOUTUBE_TRENDING_VIDEOS_PROGRESS,
@@ -86,4 +109,11 @@ export function* watchSearchYoutubeTrendingVideos() {
 
 export function* watchMockLogin() {
   yield takeLatest(MOCK_LOGIN_PROGRESS, mockLoginSaga);
+}
+
+export function* watchPaginateYoutubeTrendingVideos() {
+  yield takeLatest(
+    PAGINATE_YOUTUBE_VIDEOS_PROGRESS,
+    paginateYoutubeTrendingVideosSaga,
+  );
 }
