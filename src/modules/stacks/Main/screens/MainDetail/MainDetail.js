@@ -62,16 +62,10 @@ const MainDetail = props => {
     return string.replace(/\s+/g, '');
   };
 
-  const getStringAfterString = (string, afterString) => {
-    var rightHandSide = string.split(afterString)[1];
-    return rightHandSide.split('/default.jpg')[0];
-  };
-
   const shapeYoutubeUrl = (videoId, ab_channel) => {
-    return `https://www.youtube.com/watch?v=${getStringAfterString(
-      videoId,
-      'https://i.ytimg.com/vi/',
-    )}&ab_channel=${deleteSpacesBetweenWords(ab_channel)}`;
+    return `https://www.youtube.com/watch?v=${videoId}&ab_channel=${deleteSpacesBetweenWords(
+      ab_channel,
+    )}`;
   };
 
   const renderVideoItem = ({item, index}) => {
@@ -81,25 +75,16 @@ const MainDetail = props => {
         key={index}
         onPress={() => {
           Linking.canOpenURL(
-            shapeYoutubeUrl(
-              item?.snippet?.thumbnails?.default?.url,
-              item?.snippet?.channelTitle,
-            ),
+            shapeYoutubeUrl(item?.id, item?.snippet?.channelTitle),
           ).then(supported => {
             if (supported) {
               Linking.openURL(
-                shapeYoutubeUrl(
-                  item?.snippet?.thumbnails?.default?.url,
-                  item?.snippet?.channelTitle,
-                ),
+                shapeYoutubeUrl(item?.id, item?.snippet?.channelTitle),
               );
             } else {
               alert(
                 "Don't know how to open URI: " +
-                  shapeYoutubeUrl(
-                    item?.snippet?.thumbnails?.default?.url,
-                    item?.snippet?.channelTitle,
-                  ),
+                  shapeYoutubeUrl(item?.id, item?.snippet?.channelTitle),
               );
             }
           });
